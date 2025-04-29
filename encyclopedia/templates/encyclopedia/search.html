@@ -6,10 +6,10 @@
 
 {% block body %}
     {% if results %}
-        <h3 style="margin-top: 0px; padding-top: 20px;">Matching entries for "{{ query }}""</h3>
+        <h3>Matching entries for "{{ query }}"</h3>
         <ul>
             {% for entry in results %}
-                <li><a href="{% url 'wiki:entry' title=entry %}">{{ entry }}</a></li><br>
+                <li><a href="{% url 'wiki:entry' title=entry %}">{{ entry }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
