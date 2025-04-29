@@ -1,0 +1,28 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Create New Page
+{% endblock %}
+
+{% block body %}
+    <h1>Create New Page</h1>
+    <form action="{% url 'wiki:create' %}" method="post">
+        {% csrf_token %}
+        <label for="title" style="margin-top: 20px;">Enter title:</label><br>
+        <input type="text" id="title" name="title" autocomplete="off" value="{{ title }}" required minlength="1">
+        {% if empty_title %}
+            <span style="color: #FF3333; margin-left: 10px;">{{ empty_title }}</span>
+        {% endif %}
+        {% if exists_error %}
+            <span style="color: #FF3333; margin-left: 10px;">{{ exists_error }}</span>
+        {% endif %}
+        <br>
+        <label for="textbox" style="margin-top: 20px;">Enter content:</label><br>
+        <textarea id="textbox" name="textbox" required minlength="1" autocomplete="off" style="width: 450px; height: 450px; padding: 10px;">{{ content }}</textarea>
+        {% if content_error %}
+            <span style="color: #FF3333; margin-left: 10px;">{{ content_error }}</span>
+        {% endif %}
+        <br>
+        <button type="submit" style="margin-top: 20px;">Submit</button><br>
+    </form>
+{% endblock %}

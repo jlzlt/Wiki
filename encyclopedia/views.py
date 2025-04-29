@@ -44,3 +44,42 @@ def search(request):
             "query": q,
             "results": matching_entries            
         })
+    
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get('title', '').strip()
+        content = request.POST.get('textbox', '').strip()
+
+        if not title:
+            return render(request, "encyclopedia/create.html", {
+                "empty_title": "Title field cannot be empty",
+                "title": title,
+                "content": content   
+            })
+        
+        elif not content:
+            return render(request, "encyclopedia/create.html", {
+                "content_error": "Content field cannot be empty",
+                "title": title,
+                "content": content      
+            })
+        
+        elif util.get_entry(title):
+            return render(request, "encyclopedia/create.html", {
+                "exists_error": "This title already exists",
+                "title": title,
+                "content": content              
+            })
+        
+        util.save_entry(title, content)
+
+        entry = util.get_entry(title)
+
+        entry_html = markdown2.markdown(entry)
+
+        return render(request, "encyclopedia/entry.html", {
+            "title": title.capitalize(),
+            "entry": entry_html
+        })
+
+    return render(request, "encyclopedia/create.html")
